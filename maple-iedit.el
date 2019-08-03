@@ -43,10 +43,15 @@
   :type 'boolean
   :group 'maple-iedit)
 
+(defcustom maple-iedit-follow-here t
+  "Whether match regexp follow last match."
+  :type 'boolean
+  :group 'maple-iedit)
+
 (defun maple-iedit-point()
   "Get current point."
   (if (use-region-p)
-      (cons (region-beginning) (region-end))
+      (progn (deactivate-mark t) (cons (region-beginning) (region-end)))
     (let ((_ (iedit-default-occurrence))
           (point (bounds-of-thing-at-point iedit-occurrence-type-local)))
       (unless point (error "Failed to create marker")) point)))
@@ -56,9 +61,27 @@
   (let* ((point  (maple-iedit-point))
          (regexp (or regexp (buffer-substring-no-properties (car point) (cdr point)))))
     (save-excursion
-      (deactivate-mark t)
       (setq iedit-initial-string-local regexp)
       (iedit-start regexp (or beg (car point)) (or end (cdr point))))))
+
+(defun maple-iedit-match-here()
+  "Match here occurrence."
+  (interactive)
+  (cond (iedit-mode
+         (let* ((point (maple-iedit-point))
+                (beg   (car point))
+                (end   (cdr point))
+                (ovpoint beg))
+           (while (and ovpoint (<= ovpoint end))
+             (if (not (iedit-find-overlay-at-point ovpoint 'iedit-occurrence-overlay-name))
+                 (setq ovpoint (+ ovpoint 1))
+               (save-excursion (goto-char ovpoint) (iedit-toggle-selection))
+               (setq ovpoint nil)))
+           (when maple-iedit-follow-here
+             (setq iedit-initial-string-local (buffer-substring-no-properties beg end)))
+           (push (iedit-make-occurrence-overlay beg end) iedit-occurrences-overlays)
+           (goto-char beg)))
+        (t (maple-iedit-match))))
 
 (defun maple-iedit-match-all()
   "Match all occurrence."
