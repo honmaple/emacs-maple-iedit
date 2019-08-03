@@ -1,6 +1,9 @@
 * emacs-maple-iedit
   Emacs multiple cursors support based on iedit.
 
+** screenshot
+   [[https://github.com/honmaple/emacs-maple-iedit/blob/master/screenshot/example.gif]]
+
 ** How to use
    #+begin_src bash
    git clone https://github.com/honmaple/emacs-maple-iedit ~/.emacs.d/site-lisp/maple-iedit
