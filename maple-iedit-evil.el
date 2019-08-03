@@ -66,7 +66,6 @@
   "Paste the string like evil-paste-before with COUNT."
   (interactive "P")
   (evil-insert-state)
-  (goto-char (+ 1 (point)))
   (let ((text (car kill-ring)))
     (dotimes (_ (or count 1))
       (insert text)))
@@ -76,6 +75,7 @@
   "Paste the string like evil-paste-after with COUNT."
   (interactive "P")
   (evil-insert-state)
+  (goto-char (+ 1 (point)))
   (let ((text (car kill-ring)))
     (dotimes (_ (or count 1))
       (insert text)))

@@ -26,6 +26,7 @@
 ;;; Code:
 (require 'iedit)
 (require 'maple-iedit-evil)
+(require 'maple-iedit-expand)
 
 (defvar maple-iedit--init nil)
 
@@ -47,6 +48,11 @@
   "Whether match regexp follow last match."
   :type 'boolean
   :group 'maple-iedit)
+
+(defmacro maple-iedit-with(&rest body)
+  "Run BODY within maple iedit."
+  (declare (indent 1) (doc-string 2))
+  `(let ((ov (iedit-find-current-occurrence-overlay))) ,@body))
 
 (defun maple-iedit-point()
   "Get current point."
@@ -131,6 +137,18 @@
     (when point (goto-char point))
     (maple-iedit-match-previous)))
 
+(defun maple-iedit-move-beginning-of-line()
+  "Move-beginning-of-line within maple-iedit."
+  (interactive)
+  (maple-iedit-with (if ov (goto-char (overlay-start ov))
+                      (call-interactively 'move-beginning-of-line))))
+
+(defun maple-iedit-move-end-of-line()
+  "Move-end-of-line within maple-iedit."
+  (interactive)
+  (maple-iedit-with (if ov (goto-char (overlay-end ov))
+                      (call-interactively 'move-end-of-line))))
+
 (defun maple-iedit-next()
   "Goto next occurrence."
   (interactive)
@@ -150,6 +168,8 @@
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map iedit-mode-keymap)
     (define-key map (kbd "<escape>") #'maple-iedit-abort)
+    (define-key map (kbd "C-a") #'maple-iedit-move-beginning-of-line)
+    (define-key map (kbd "C-e") #'maple-iedit-move-end-of-line)
     (define-key map (kbd "C-g") #'maple-iedit-abort)
     (define-key map (kbd "C-n") #'maple-iedit-match-next)
     (define-key map (kbd "C-p") #'maple-iedit-match-previous)
