@@ -14,10 +14,7 @@
        :ensure nil
        :commands (maple-iedit-match-all maple-iedit-match-next maple-iedit-match-previous)
        :config
-       (setq maple-iedit-evil-keybind t
-             maple-iedit-ignore-case t)
-
-       (maple-iedit-init)
+       (setq maple-iedit-ignore-case t)
 
        (defhydra maple/iedit ()
          ("n" maple-iedit-match-next "next")

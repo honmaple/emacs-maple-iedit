@@ -24,18 +24,23 @@
 ;;
 
 ;;; Code:
+(defmacro maple-iedit-with(&rest body)
+  "Run BODY within maple iedit."
+  (declare (indent 0) (doc-string 2))
+  `(let ((ov (iedit-find-current-occurrence-overlay))) ,@body))
+
 (defun maple-iedit-evil-insert-line ()
   "Replace evil-insert-line within maple-iedit."
   (interactive)
-  (let ((ov (iedit-find-current-occurrence-overlay)))
+  (maple-iedit-with
     (if ov (progn (goto-char (overlay-start ov))
                   (evil-insert-state))
-      (call-interactively 'evil-insert-line))))
+      (call-interactively 'evil-insert-line)) ))
 
 (defun maple-iedit-evil-append-line ()
   "Replace evil-append-line within maple-iedit."
   (interactive)
-  (let ((ov (iedit-find-current-occurrence-overlay)))
+  (maple-iedit-with
     (if ov (progn (goto-char (overlay-end ov))
                   (evil-insert-state))
       (call-interactively 'evil-append-line))))
@@ -43,21 +48,21 @@
 (defun maple-iedit-evil-end-of-line ()
   "Replace evil-end-of-line within maple-iedit."
   (interactive)
-  (let ((ov (iedit-find-current-occurrence-overlay)))
+  (maple-iedit-with
     (if ov (goto-char (overlay-end ov))
       (call-interactively 'evil-end-of-line))))
 
 (defun maple-iedit-evil-beginning-of-line ()
   "Replace evil-beginning-of-line within maple-iedit."
   (interactive)
-  (let ((ov (iedit-find-current-occurrence-overlay)))
+  (maple-iedit-with
     (if ov (goto-char (overlay-start ov))
       (call-interactively 'evil-beginning-of-line))))
 
 (defun maple-iedit-evil-paste-replace ()
   "Replace the selection with the yanked text."
   (interactive)
-  (let ((ov (iedit-find-current-occurrence-overlay)))
+  (maple-iedit-with
     (if ov (progn (iedit-delete-occurrences)
                   (call-interactively 'maple-iedit-evil-paste-after))
       (call-interactively 'evil-paste-before))))
@@ -84,14 +89,14 @@
 (defun maple-iedit-evil-find-char-to ()
   "Replace evil-find-char-to within maple-iedit."
   (interactive)
-  (let ((ov (iedit-find-current-occurrence-overlay)))
+  (maple-iedit-with
     (if ov (maple-iedit-skip-and-match-next)
       (call-interactively 'evil-find-char-to))))
 
 (defun maple-iedit-evil-find-char-to-backward ()
   "Replace evil-find-char-to-backward within maple-iedit."
   (interactive)
-  (let ((ov (iedit-find-current-occurrence-overlay)))
+  (maple-iedit-with
     (if ov (maple-iedit-skip-and-match-previous)
       (call-interactively 'evil-find-char-to-backward))))
 
@@ -101,7 +106,7 @@
   (iedit-show/hide-unmatched-lines))
 
 (defun maple-iedit-evil-keybinds ()
-  "Set up the evil keybindings for `maple-iedit'."
+  "Set up the evil keybindings for `maple-iedit`."
   (evil-define-minor-mode-key 'normal 'maple-iedit-mode
     (kbd "$")        #'maple-iedit-evil-end-of-line
     (kbd "^")        #'maple-iedit-evil-beginning-of-line

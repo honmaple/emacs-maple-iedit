@@ -28,8 +28,6 @@
 (require 'maple-iedit-evil)
 (require 'maple-iedit-expand)
 
-(defvar maple-iedit--init nil)
-
 (defgroup maple-iedit nil
   "Multi cursor with iedit."
   :group 'maple)
@@ -48,11 +46,6 @@
   "Whether match regexp follow last match."
   :type 'boolean
   :group 'maple-iedit)
-
-(defmacro maple-iedit-with(&rest body)
-  "Run BODY within maple iedit."
-  (declare (indent 1) (doc-string 2))
-  `(let ((ov (iedit-find-current-occurrence-overlay))) ,@body))
 
 (defun maple-iedit-point()
   "Get current point."
@@ -178,12 +171,10 @@
 
 (defun maple-iedit-mode-on()
   "Turn on `maple-iedit-mode`."
-  (interactive)
   (maple-iedit-mode))
 
 (defun maple-iedit-mode-off()
   "Turn off `maple-iedit-mode`."
-  (interactive)
   (maple-iedit-mode -1))
 
 (define-minor-mode maple-iedit-mode
@@ -191,14 +182,9 @@
   :group  'maple-iedit
   :keymap maple-iedit-mode-keymap)
 
-;;;###autoload
-(defun maple-iedit-init()
-  "Maple iedit init."
-  (unless maple-iedit--init
-    (add-hook 'iedit-mode-hook 'maple-iedit-mode-on)
-    (add-hook 'iedit-mode-end-hook 'maple-iedit-mode-off)
-    (when maple-iedit-evil-keybind (maple-iedit-evil-keybinds))
-    (setq maple-iedit--init t)))
+(add-hook 'iedit-mode-hook 'maple-iedit-mode-on)
+(add-hook 'iedit-mode-end-hook 'maple-iedit-mode-off)
+(when maple-iedit-evil-keybind (maple-iedit-evil-keybinds))
 
 (provide 'maple-iedit)
 ;;; maple-iedit.el ends here
