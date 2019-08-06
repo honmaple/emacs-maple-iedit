@@ -130,7 +130,7 @@
     (kbd "C-t")      #'maple-iedit-skip-and-match-next)
 
   (evil-define-minor-mode-key 'insert 'maple-iedit-mode
-    (kbd "escape")   #'evil-normal-state))
+    (kbd "<escape>")   #'evil-normal-state))
 
 (provide 'maple-iedit-evil)
 ;;; maple-iedit-evil.el ends here
