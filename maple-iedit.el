@@ -58,7 +58,8 @@
 (defun maple-iedit-match(&optional regexp beg end)
   "Match single occurrence REGEXP &OPTIONAL BEG END."
   (let* ((point  (maple-iedit-point))
-         (regexp (or regexp (buffer-substring-no-properties (car point) (cdr point)))))
+         (regexp (or regexp (buffer-substring-no-properties (car point) (cdr point))))
+         (regexp (regexp-quote regexp)))
     (save-excursion
       (setq iedit-initial-string-local regexp)
       (iedit-start regexp (or beg (car point)) (or end (cdr point))))))
