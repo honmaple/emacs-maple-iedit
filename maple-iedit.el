@@ -3,6 +3,7 @@
 ;; Copyright (C) 2015-2019 lin.jiang
 
 ;; Author: lin.jiang <mail@honmaple.com>
+;; Package-Requires: (iedit)
 ;; URL: https://github.com/honmaple/emacs-maple-iedit
 
 ;; This file is free software: you can redistribute it and/or modify
@@ -86,7 +87,9 @@
 (defun maple-iedit-match-all()
   "Match all occurrence."
   (interactive)
-  (maple-iedit-match nil (point-min) (point-max)))
+  (if (and iedit-mode iedit-initial-string-local)
+      (maple-iedit-match iedit-initial-string-local (point-min) (point-max))
+    (maple-iedit-match nil (point-min) (point-max))))
 
 (defun maple-iedit-match-next(&optional forward)
   "Match next occurrence with FORWARD."
