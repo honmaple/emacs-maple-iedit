@@ -149,12 +149,12 @@
 (defun maple-iedit-next()
   "Goto next occurrence."
   (interactive)
-  (let (iedit-forward-success) (iedit-next-occurrence)))
+  (let (iedit-forward-success) (call-interactively 'iedit-next-occurrence)))
 
 (defun maple-iedit-previous()
   "Goto previous occurrence."
   (interactive)
-  (let (iedit-forward-success) (iedit-prev-occurrence)))
+  (let (iedit-forward-success) (call-interactively 'iedit-prev-occurrence)))
 
 (defun maple-iedit-abort()
   "Iedit Abort."
