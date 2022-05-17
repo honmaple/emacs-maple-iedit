@@ -103,7 +103,7 @@
 (defun maple-iedit-hide-unmatch-lines()
   "Show or hide unmatched lines."
   (interactive)
-  (iedit-show/hide-unmatched-lines))
+  (iedit-show/hide-context-lines))
 
 (defun maple-iedit-evil-keybinds ()
   "Set up the evil keybindings for `maple-iedit`."
