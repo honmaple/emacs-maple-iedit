@@ -171,7 +171,8 @@
     (define-key map (kbd "C-n") #'maple-iedit-match-next)
     (define-key map (kbd "C-p") #'maple-iedit-match-previous)
     (define-key map (kbd "C-t") #'maple-iedit-skip-and-match-next)
-    map) "Keymap of command `maple-iedit-mode'.")
+    map)
+  "Keymap of command `maple-iedit-mode'.")
 
 (defun maple-iedit-mode-on()
   "Turn on `maple-iedit-mode`."
@@ -182,7 +183,7 @@
   (maple-iedit-mode -1))
 
 (define-minor-mode maple-iedit-mode
-  "maple iedit mode"
+  "Maple iedit mode."
   :group  'maple-iedit
   :keymap maple-iedit-mode-keymap)
 
